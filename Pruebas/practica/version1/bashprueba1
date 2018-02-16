@@ -1,0 +1,63 @@
+#!/bin/bash
+
+#CONSTANTES 
+MAX_SORTEOS=10
+MAX_JUGADORES=15
+NUM_ARGUMENTOS=2
+REGEX=^[0-9]+$
+
+#CONSTANTES DE ERRORES
+ERR_NUM_PARAMETROS=1
+ERR_VALOR_PARAMETROS=2
+ERR_TIPO_PARAMETROS=3
+ERR_VALOR_CERO=4
+
+#CONSTANTE DE RETORNO
+FINALIZACION_CORRECTA=0
+
+function CompruebaArgumentos()
+{
+	if [ $# -ne $NUM_ARGUMENTOS ]
+	   then
+	      return $ERR_NUM_PARAMETROS
+	   fi
+	if [[ $1 =~ $REGEX ]] && [[ $2 =~ $REGEX ]] 
+	   then
+	       if [ $1 -eq 0 ] || [ $1 -eq 0 ]
+	 	  then
+		     return $ERR_VALOR_CERO
+	       elif [ $1 -le $MAX_SORTEOS ] && [ $2 -le $MAX_JUGADORES ]
+	          then 
+		     return $FINALIZACION_CORRECTA
+	       else
+	          return $ERR_VALOR_PARAMETROS
+	       fi
+	   else
+	       return $ERR_TIPO_PARAMETROS
+	   fi
+}
+
+function Informacion()
+{
+	if [ $1 -eq $ERR_NUM_PARAMETROS ]
+	   then
+	      echo "Has insertado un numero de parametros superior al especificado"
+	elif [ $1 -eq $ERR_VALOR_PARAMETROS ]
+	   then
+	      echo "El valor maximo del parametro 1 deberia ser 10, y el del parametro 2 15"
+	elif [ $1 -eq $ERR_TIPO_PARAMETROS ]
+	   then
+	      echo "Los parametros introducidos han de ser numericos del 1-10 o del 1-15"
+	elif [ $1 -eq $ERR_VALOR_CERO ]
+	   then
+	      echo "Los parametros introducidos no pueden tener como valor 0"	
+	else 
+	      echo "Todo correcto"
+	fi
+}
+
+
+
+CompruebaArgumentos $*
+Informacion $?
+
